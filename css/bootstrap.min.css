@@ -35,3 +35,7 @@ body {min-width: 700px;}
     float: none;
     margin: 0 auto;
 }
+
+.padding-less{ padding: 7px;}
+.username-block{ width: 200px; float: left;padding: 7px;}
+.header-block{ width: 260px; float: left;}
