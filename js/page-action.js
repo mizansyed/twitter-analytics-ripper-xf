@@ -8,6 +8,7 @@ $(function() {
     var dataContainer = document.getElementById('data-container');
     var dataTable = document.getElementById('data-table');
     var username = document.getElementById('username');
+    var btnScroll = document.getElementById('btn-scroll');
 
     btnPullData.addEventListener("click", function() {
 
@@ -31,6 +32,23 @@ $(function() {
     });
 
 
+    btnScroll.addEventListener("click", function() {
+        alert("clicked");
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        }, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {
+                action: "scroll"
+            }, function(response) {
+                if (response.action == "completed") {
+
+                }
+            });
+        });
+    });
+
+
     var getCurrentUser = function(data) {
         //if (username.value)
         username.value = data;
@@ -43,19 +61,22 @@ $(function() {
         dataContainer.innerHTML = data;
         dataContainer.style.display = 'none';
 
-
-
         var tweetsRows = $("#analytics_tl tbody tr");
-        var rowNodes = "";
 
-        rowNodes = "<thead><tr><th>Tweet</th><th>Clicks</th><th>Date</th><th>Favourites</th><th>ReTweets</th><th>Replies</th></tr></thead>";
+        if (tweetsRows && tweetsRows.length) {
+            var rowNodes = "";
 
-        tweetsRowsLength = tweetsRows.length;
-        for (i = 0; i < tweetsRowsLength; i++) {
-            rowNodes += processRow(tweetsRows[i]);
+            rowNodes = "<thead><tr><th>Tweet</th><th>Clicks</th><th>Date</th><th>Favourites</th><th>ReTweets</th><th>Replies</th></tr></thead>";
+            rowNodes += "<tbody>";
+            tweetsRowsLength = tweetsRows.length;
+            for (i = 0; i < tweetsRowsLength; i++) {
+                rowNodes += processRow(tweetsRows[i]);
+            }
+            rowNodes += "</tbody>"
+            dataTable.innerHTML = "<table class='table' id='out_tbl'>" + rowNodes + "</table>";
+        } else {
+            dataTable.innerHTML = "<p class='error-text'>Unable to pull data</p>";
         }
-
-        dataTable.innerHTML = "<table class='table' id='out_tbl'>" + rowNodes + "</table>";
     };
 
 
@@ -82,12 +103,22 @@ $(function() {
             return true;
         }
 
-        tdate = $(thisRow).find("span .timestamp").html();
-        faves = $(thisRow).find(".analytics_tl-faves span").html();
-        rt = $(thisRow).find(".analytics_tl-retweets span").html();
-        replies = $(thisRow).find(".analytics_tl-replies span").html();
+        //tdate = $(thisRow).find("span .timestamp").html();
+        
+        tdateEl = thisRow.querySelector("span .timestamp");
+        if (tdateEl) tdate = formatDateToGMT(tdateEl.innerHTML);
 
-        clicks = $(thisRow).find(".analytics_tl-link_count").html();
+        favesEl = thisRow.querySelector(".analytics_tl-faves span");
+        if (favesEl) faves = favesEl.innerHTML;
+
+        rtEl = thisRow.querySelector(".analytics_tl-retweets span");
+        if (rtEl) rt = rtEl.innerHTML;
+
+        repliesEl = thisRow.querySelector(".analytics_tl-replies span")
+        if (repliesEl) replies = repliesEl.innerHTML;
+
+        clicksEl = thisRow.querySelector(".analytics_tl-link_count")
+        if (clicksEl) clicks = clicksEl.innerHTML;
         if (empty(clicks)) clicks = "NA";
         clicks = clicks.replace(" clicks", "");
 
@@ -96,9 +127,21 @@ $(function() {
     };
 
 
-    var updateStatus = function(message) {
-
+    var updateStatus = function(message, status) {
+        dataTable.innerHTML = "<div class='"+ status +"'><p class='"+ status +"'>" + message + "</p></div>";
     };
+
+
+    var formatDateToGMT = function(data)
+    {
+        if (data.search('ago') == -1){
+            data = data.replace(" Pacific time", " PST");
+            var date = Date.parse(data);
+            return formattedDate = new Date(date);
+        } else {
+            return data;
+        }
+    }
 
 
     var empty = function(data) {
@@ -122,7 +165,7 @@ $(function() {
 
 
     //taken and adpated from http://www.lucaongaro.eu/blog/2012/11/26/dom-selection-without-jquery/
-    var q = function(selector, ctx) {
+   function q(selector, ctx) {
         ctx = ctx || document;
 
         // Return methods for lazy evaluation of the query

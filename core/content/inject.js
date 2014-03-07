@@ -6,15 +6,9 @@ $(function() {
                 username_url,
                 current_user_node;
 
-            //console.time('jquery');
-            //	var html = $('#analytics_tl-table_container').html();
-            //console.timeEnd('jquery');
-
-            //console.time('native');
             var html2 = document.getElementById('analytics_tl-table_container');
             if (html2)
                 html = html2.innerHTML;
-            //console.timeEnd('native');
 
             current_user_node = document.getElementsByClassName("current-user")[0];
             if (current_user_node) {
@@ -31,5 +25,32 @@ $(function() {
                 action: "returndata"
             });
         }
+
+
+
+        var timeAction = 'SKMCJ4DKSM5DSDK';
+        var scrollActionStatus;
+
+        if (request.action == "scroll") {
+            if (scrollActionStatus == 'started') {
+                clearTimeout(timeAction);
+            } else {
+                doScroll();
+            }
+
+            sendResponse({
+                action: timeAction
+            });
+        }
+
+        function doScroll()
+        {
+            timeAction = setTimeout(function() {window.scrollTo(0, document.body.scrollHeight); scrollActionStatus = 'started'; doScroll();}, 4000);
+            
+        }
+
+
+
+
     });
 });

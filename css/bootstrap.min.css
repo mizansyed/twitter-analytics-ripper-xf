@@ -40,3 +40,4 @@ body {min-width: 700px;}
 .username-block{ width: 200px; float: left;padding: 7px;}
 .header-block{ width: 260px; float: left;}
 #loading-indicator {display: none;}
+#out_tbl tbody td{ border-bottom: solid 1px #eeeeee}
