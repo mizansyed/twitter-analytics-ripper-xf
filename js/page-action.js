@@ -12,6 +12,7 @@ $(function() {
 
     btnPullData.addEventListener("click", function() {
 
+        btnScroll.disabled = true;
         loadingIndicator.style.display = 'block';
 
         chrome.tabs.query({
@@ -29,11 +30,12 @@ $(function() {
         });
 
         loadingIndicator.style.display = 'none';
+        btnScroll.disabled = false;
     });
 
 
     btnScroll.addEventListener("click", function() {
-        alert("clicked");
+
         chrome.tabs.query({
             active: true,
             currentWindow: true
@@ -104,7 +106,7 @@ $(function() {
         }
 
         //tdate = $(thisRow).find("span .timestamp").html();
-        
+
         tdateEl = thisRow.querySelector("span .timestamp");
         if (tdateEl) tdate = formatDateToGMT(tdateEl.innerHTML);
 
@@ -128,13 +130,12 @@ $(function() {
 
 
     var updateStatus = function(message, status) {
-        dataTable.innerHTML = "<div class='"+ status +"'><p class='"+ status +"'>" + message + "</p></div>";
+        dataTable.innerHTML = "<div class='" + status + "'><p class='" + status + "'>" + message + "</p></div>";
     };
 
 
-    var formatDateToGMT = function(data)
-    {
-        if (data.search('ago') == -1){
+    var formatDateToGMT = function(data) {
+        if (data.search('ago') == -1) {
             data = data.replace(" Pacific time", " PST");
             var date = Date.parse(data);
             return formattedDate = new Date(date);
@@ -165,7 +166,7 @@ $(function() {
 
 
     //taken and adpated from http://www.lucaongaro.eu/blog/2012/11/26/dom-selection-without-jquery/
-   function q(selector, ctx) {
+    function q(selector, ctx) {
         ctx = ctx || document;
 
         // Return methods for lazy evaluation of the query
@@ -194,6 +195,11 @@ $(function() {
 
         };
 
+    }
+
+    function sleep(ms) {
+        var unixtime_ms = new Date().getTime();
+        while (new Date().getTime() < unixtime_ms + ms) {}
     }
 
 });
