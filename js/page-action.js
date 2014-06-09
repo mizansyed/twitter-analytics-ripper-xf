@@ -197,9 +197,5 @@ $(function() {
 
     }
 
-    function sleep(ms) {
-        var unixtime_ms = new Date().getTime();
-        while (new Date().getTime() < unixtime_ms + ms) {}
-    }
 
 });
