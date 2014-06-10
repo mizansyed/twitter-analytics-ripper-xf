@@ -27,30 +27,39 @@ $(function() {
         }
 
 
-
-        var timeAction = 'SKMCJ4DKSM5DSDK';
         var scrollActionStatus;
+        var docHeight = document.documentElement.scrollHeight;
+        var sameHeightDiscovery = 0;
 
         if (request.action == "scroll") {
-            if (scrollActionStatus == 'started') {
-                clearTimeout(timeAction);
-            } else {
-                doScroll();
-            }
-
+            doScroll();
             sendResponse({
-                action: timeAction
+                action: "scrollStarted"
             });
         }
 
-        function doScroll()
-        {
-            timeAction = setTimeout(function() {window.scrollTo(0, document.body.scrollHeight); scrollActionStatus = 'started'; doScroll();}, 4000);
-            
+
+        if (request.action == "stopscroll") {
+            stopScroll();
+            sendResponse({
+                action: "scrollStopped"
+            });
         }
 
-
-
-
     });
+
+    var timeAction = 'SKMCJ4DKSM5DSDK';
+
+    function doScroll() {
+        window.scrollTo(0, document.body.scrollHeight);
+        timeAction = setTimeout(doScroll, 4000);
+    }
+
+
+    function stopScroll() {
+        if (timeAction) {
+            clearTimeout(timeAction);
+            timeAction = 'SKMCJ4DKSM5DSDK';
+        }
+    }
 });

@@ -36,17 +36,28 @@ $(function() {
 
     btnScroll.addEventListener("click", function() {
 
+
+        var scrollAction = (btnScroll.firstChild.data == "Stop Scrolling") ? "stopscroll" : "scroll";
+
         chrome.tabs.query({
             active: true,
             currentWindow: true
         }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {
-                action: "scroll"
-            }, function(response) {
-                if (response.action == "completed") {
 
+            btnScroll.firstChild.data = "Stop Scrolling";
+            btnPullData.disabled = true;
+
+            chrome.tabs.sendMessage(tabs[0].id, {
+                action: scrollAction
+            }, function(response) {
+                if (response.action == "scrollStarted") {
+
+                } else if (response.action == "scrollStopped") {
+                    btnScroll.firstChild.data = "Autoscroll";
+                    btnPullData.disabled = false;
                 }
             });
+
         });
     });
 
