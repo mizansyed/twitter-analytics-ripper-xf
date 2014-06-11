@@ -10,6 +10,19 @@ $(function() {
     var username = document.getElementById('username');
     var btnScroll = document.getElementById('btn-scroll');
 
+
+
+    bodyInit();
+
+
+    function bodyInit() {
+        var url = localStorage["wd-tarxf-databaseUrl"];
+        if (url) {
+            btnSaveBtn.disabled = true;
+        }
+    }
+
+
     btnPullData.addEventListener("click", function() {
 
         btnScroll.disabled = true;

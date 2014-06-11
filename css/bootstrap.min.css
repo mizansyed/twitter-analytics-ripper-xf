@@ -41,3 +41,5 @@ body {min-width: 700px;}
 .header-block{ width: 260px; float: left;}
 #loading-indicator {display: none;}
 #out_tbl tbody td{ border-bottom: solid 1px #eeeeee}
+h1.sub-page-h1 {font-size: 25px;}
+div#flash {}
