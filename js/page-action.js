@@ -9,6 +9,7 @@ $(function() {
     var dataTable = document.getElementById('data-table');
     var username = document.getElementById('username');
     var btnScroll = document.getElementById('btn-scroll');
+    var extraBlock = document.getElementById('extra-block');
 
 
 
@@ -19,6 +20,11 @@ $(function() {
         var url = localStorage["wd-tarxf-databaseUrl"];
         if (url) {
             btnSaveBtn.disabled = true;
+        }
+
+        var reportingToolLink = localStorage["wd-tarxf-reportingToolUrl"];
+        if (reportingToolLink) { 
+            extraBlock.innerHTML = '<p><a target="_blank" href="' + reportingToolLink +'">Reporting tool</a></p>';
         }
     }
 

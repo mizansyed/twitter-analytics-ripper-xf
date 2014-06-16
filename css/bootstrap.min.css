@@ -38,8 +38,10 @@ body {min-width: 700px;}
 
 .padding-less{ padding: 7px;}
 .username-block{ width: 200px; float: left;padding: 7px;}
+.extra-block{ width: 200px; float: left;padding: 7px;}
 .header-block{ width: 260px; float: left;}
 #loading-indicator {display: none;}
 #out_tbl tbody td{ border-bottom: solid 1px #eeeeee}
 h1.sub-page-h1 {font-size: 25px;}
-div#flash {}
+div#flash .error { border: solid 2px red; color: red; padding: 10px;}
+div#flash .success { border: solid 2px green; color: green; padding: 10px;}
